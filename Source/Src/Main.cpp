@@ -9,6 +9,7 @@ enum class ETile
 	WALL = 0x01,
 	BODY = 0x02,
 	HEAD = 0x03,
+	FOOD = 0x04,
 };
 
 class GameContext
@@ -23,6 +24,7 @@ public:
 			{ ETile::WALL, '#' },
 			{ ETile::BODY, 'o' },
 			{ ETile::HEAD, '@' },
+			{ ETile::FOOD, '*' },
 		};
 
 		for (int y = 0; y < _rowSize; ++y)
@@ -41,6 +43,8 @@ public:
 		SetTile(8, 10, ETile::BODY);
 		SetTile(7, 10, ETile::BODY);
 		SetTile(6, 10, ETile::BODY);
+
+		SetTile(11, 11, ETile::FOOD);
 	}
 
 	virtual ~GameContext() { }
