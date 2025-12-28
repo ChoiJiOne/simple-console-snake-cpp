@@ -1,3 +1,6 @@
+#include <cassert>
+#include <windows.h>
+
 #include "ConsoleManager.h"
 
 void ConsoleManager::Startup()
@@ -7,6 +10,7 @@ void ConsoleManager::Startup()
 		return; // TODO: 여기에 에러 처리 필요.
 	}
 
+	_outputHandle = GetStdHandle(STD_OUTPUT_HANDLE);
 	_isInitialized = true;
 }
 
@@ -17,7 +21,12 @@ void ConsoleManager::Shutdown()
 		return; // TODO: 여기에 에러 처리 필요
 	}
 
-	// CHECKME: 여기에서 리소스 정리.
-
+	_outputHandle = nullptr;
 	_isInitialized = false;
+}
+
+void ConsoleManager::MoveCursor(int32_t x, int32_t y)
+{
+	COORD cursorPos = { x, y };
+	assert(SetConsoleCursorPosition(_outputHandle, cursorPos));
 }

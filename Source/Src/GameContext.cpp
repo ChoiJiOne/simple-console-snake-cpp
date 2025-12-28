@@ -1,15 +1,7 @@
-#include <Windows.h>
 #include <cassert>
 
+#include "ConsoleManager.h"
 #include "GameContext.h"
-
-void Gotoxy(int32_t x, int32_t y)
-{
-	COORD pos = { x, y };
-	HANDLE output = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleCursorPosition(output, pos);
-}
-
 
 GameContext::GameContext()
 {
@@ -46,7 +38,7 @@ void GameContext::Render()
 		return;
 	}
 
-	Gotoxy(0, 0);
+	ConsoleManager::Get().MoveCursor(0, 0);
 
 	for (int y = 0; y < _rowSize; ++y)
 	{
