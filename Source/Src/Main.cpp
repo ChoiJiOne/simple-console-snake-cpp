@@ -11,6 +11,7 @@ int main(void)
 	InputManager::Get().Startup();
 
 	ConsoleManager::Get().SetVisibleCursor(false);
+	ConsoleManager::Get().SetTitle("Snake");
 
 	GameContext context;
 	

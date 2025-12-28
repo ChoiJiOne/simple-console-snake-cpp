@@ -41,6 +41,11 @@ void ConsoleManager::SetVisibleCursor(bool isVisible)
 	assert(SetConsoleCursorInfo(_outputHandle, &info));
 }
 
+void ConsoleManager::SetTitle(const std::string_view& title)
+{
+	assert(SetConsoleTitle(title.data()));
+}
+
 void ConsoleManager::Print(int32_t x, int32_t y, char c)
 {
 	MoveCursor(x, y);

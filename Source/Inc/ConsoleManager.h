@@ -15,6 +15,7 @@ public:
 	
 	void MoveCursor(int32_t x, int32_t y);
 	void SetVisibleCursor(bool isVisible);
+	void SetTitle(const std::string_view& title);
 
 	void Print(int32_t x, int32_t y, char c);
 	void Print(int32_t x, int32_t y, const std::string_view& str);
