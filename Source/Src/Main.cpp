@@ -50,6 +50,15 @@ int main(void)
 			newX++;
 		}
 
+		if (HIBYTE(GetAsyncKeyState(VK_ESCAPE)))
+		{
+			ConsoleManager::Get().Clear();
+		}
+		if (HIBYTE(GetAsyncKeyState(VK_SPACE)))
+		{
+			isPressed = true;
+		}
+
 		if (context.IsValidTile(newX, newY) &&  isPressed)
 		{
 			const ETile& tile = context.GetTile(x, y);

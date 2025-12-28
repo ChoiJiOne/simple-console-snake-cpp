@@ -16,13 +16,17 @@ public:
 	void MoveCursor(int32_t x, int32_t y);
 	void SetVisibleCursor(bool isVisible);
 	void SetTitle(const std::string_view& title);
+	void Clear();
 
 	void Print(int32_t x, int32_t y, char c);
 	void Print(int32_t x, int32_t y, const std::string_view& str);
 
 private:
 	friend class IManager<ConsoleManager>;
-	
+
+	const char WHITE_SPACE = ' ';
+	const char CHAR_SIZE = 1;
+
 	ConsoleManager() = default;
 	virtual ~ConsoleManager() = default; // 반드시 Shutdown을 통해 리소스 정리.
 

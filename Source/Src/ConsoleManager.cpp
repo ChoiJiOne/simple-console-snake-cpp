@@ -28,7 +28,7 @@ void ConsoleManager::Shutdown()
 
 void ConsoleManager::MoveCursor(int32_t x, int32_t y)
 {
-	COORD cursorPos = { x, y };
+	COORD cursorPos = { static_cast<SHORT>(x), static_cast<SHORT>(y) };
 	assert(SetConsoleCursorPosition(_outputHandle, cursorPos));
 }
 
@@ -46,10 +46,28 @@ void ConsoleManager::SetTitle(const std::string_view& title)
 	assert(SetConsoleTitle(title.data()));
 }
 
+void ConsoleManager::Clear()
+{
+	COORD topLeftPos = { 0 ,0 };
+	CONSOLE_SCREEN_BUFFER_INFO screen;
+	DWORD written;
+
+	assert(GetConsoleScreenBufferInfo(_outputHandle, &screen));
+	assert(FillConsoleOutputCharacterA(_outputHandle, WHITE_SPACE, screen.dwSize.X * screen.dwSize.Y, topLeftPos, &written));
+	assert(FillConsoleOutputAttribute(
+		_outputHandle, 
+		FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE,
+		screen.dwSize.X * screen.dwSize.Y, 
+		topLeftPos, 
+		&written
+	));
+	assert(SetConsoleCursorPosition(_outputHandle, topLeftPos));
+}
+
 void ConsoleManager::Print(int32_t x, int32_t y, char c)
 {
 	MoveCursor(x, y);
-	assert(WriteConsoleA(_outputHandle, &c, 1, nullptr, nullptr));
+	assert(WriteConsoleA(_outputHandle, &c, CHAR_SIZE, nullptr, nullptr));
 }
 
 void ConsoleManager::Print(int32_t x, int32_t y, const std::string_view& str)
