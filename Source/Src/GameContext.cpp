@@ -49,11 +49,9 @@ void GameContext::Render()
 			auto it = _tileCharMap.find(_tiles[offset]);
 			if (it != _tileCharMap.end())
 			{
-				std::cout << it->second;
+				ConsoleManager::Get().Print(x, y, it->second);
 			}
 		}
-
-		std::cout << "\n";
 	}
 
 	_isDirty = false;

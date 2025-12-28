@@ -1,3 +1,4 @@
+#include <iostream>
 #include <cassert>
 #include <windows.h>
 
@@ -38,4 +39,16 @@ void ConsoleManager::SetVisibleCursor(bool isVisible)
 	assert(GetConsoleCursorInfo(_outputHandle, &info));
 	info.bVisible = isVisible;
 	assert(SetConsoleCursorInfo(_outputHandle, &info));
+}
+
+void ConsoleManager::Print(int32_t x, int32_t y, char c)
+{
+	MoveCursor(x, y);
+	assert(WriteConsoleA(_outputHandle, &c, 1, nullptr, nullptr));
+}
+
+void ConsoleManager::Print(int32_t x, int32_t y, const std::string_view& str)
+{
+	MoveCursor(x, y);
+	assert(WriteConsoleA(_outputHandle, reinterpret_cast<const void*>(str.data()), static_cast<DWORD>(str.size()), nullptr, nullptr));
 }
