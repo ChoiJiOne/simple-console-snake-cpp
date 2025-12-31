@@ -2,6 +2,7 @@
 
 #include <memory>
 
+#include "ActorManager.h"
 #include "ConsoleManager.h"
 #include "GameContext.h"
 #include "GameMacro.h"
@@ -30,6 +31,7 @@ private:
 	ConsoleManager* _consoleMgr = nullptr;
 	InputManager* _inputMgr = nullptr;
 	RenderManager* _renderMgr = nullptr;
+	ActorManager* _actorMgr = nullptr;
 
 	GameTimer _timer;
 

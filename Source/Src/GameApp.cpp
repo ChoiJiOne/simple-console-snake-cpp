@@ -19,10 +19,12 @@ void GameApp::Startup()
 	_consoleMgr = ConsoleManager::GetPtr();
 	_inputMgr = InputManager::GetPtr();
 	_renderMgr = RenderManager::GetPtr();
+	_actorMgr = ActorManager::GetPtr();
 
 	_consoleMgr->Startup();
 	_inputMgr->Startup();
 	_renderMgr->Startup();
+	_actorMgr->Startup();
 
 	_consoleMgr->SetVisibleCursor(false);
 	_consoleMgr->SetTitle("Snake"); // TODO: 하드 코딩 제거 필요.
@@ -91,10 +93,12 @@ void GameApp::Shutdown()
 
 	_consoleMgr->SetVisibleCursor(true);
 
+	_actorMgr->Shutdown();
 	_renderMgr->Shutdown();
 	_inputMgr->Shutdown();
 	_consoleMgr->Shutdown();
 
+	_actorMgr = nullptr;
 	_renderMgr = nullptr;
 	_inputMgr = nullptr;
 	_consoleMgr = nullptr;
