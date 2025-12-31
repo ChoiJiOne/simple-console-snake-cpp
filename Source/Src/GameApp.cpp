@@ -1,4 +1,5 @@
 #include "GameApp.h"
+#include "GameAssert.h"
 
 GameApp::~GameApp()
 {
