@@ -5,15 +5,6 @@
 GameContext::GameContext()
 {
 	_tiles = std::vector<ETile>(_rowSize * _colSize, ETile::EMPTY);
-	_tileCharMap = 
-	{
-		{ ETile::EMPTY, ' ' },
-		{ ETile::WALL, '#' },
-		{ ETile::BODY, 'o' },
-		{ ETile::HEAD, '@' },
-		{ ETile::FOOD, '*' },
-	};
-
 	for (int y = 0; y < _rowSize; ++y)
 	{
 		for (int x = 0; x < _colSize; ++x)

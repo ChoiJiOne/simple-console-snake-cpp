@@ -35,6 +35,9 @@ private:
 
 	GameTimer _timer;
 
+	std::vector<IActor*> _updateActors;
+	std::vector<IActor*> _renderActors;
+
 private: // 게임 특화 로직
 	GameContext _context;
 };

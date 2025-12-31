@@ -25,12 +25,13 @@ enum class EPress : int32_t
 
 enum class EKey : int32_t
 {
-	NONE  = 0x00,
-	SPACE = 0x20,
-	LEFT  = 0x25,
-	UP    = 0x26,
-	RIGHT = 0x27,
-	DOWN  = 0x28,
+	NONE   = 0x00,
+	SPACE  = 0x20,
+	LEFT   = 0x25,
+	UP     = 0x26,
+	RIGHT  = 0x27,
+	DOWN   = 0x28,
+	ESCAPE = 0x1B,
 };
 
 class InputManager : public IManager<InputManager>

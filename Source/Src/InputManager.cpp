@@ -16,6 +16,7 @@ void InputManager::Startup()
 		EKey::UP,
 		EKey::RIGHT,
 		EKey::DOWN,
+		EKey::ESCAPE,
 	};
 
 	for (const auto& key : _keys)

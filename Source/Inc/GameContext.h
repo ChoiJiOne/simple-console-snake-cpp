@@ -29,7 +29,6 @@ public:
 	const ETile& GetTile(int32_t x, int32_t y);
 	const int32_t& GetRowSize() const { return _rowSize; }
 	const int32_t& GetColSize() const { return _colSize; }
-	const std::map<ETile, char>& GetTileCharMap() const { return _tileCharMap; } // TODO: GameRenderer(?)로 이동 예정.
 	bool IsDirty() const { return _isDirty; }
 	bool IsValidTile(int32_t x, int32_t y);
 	bool IsOutline(int32_t x, int32_t y);
@@ -41,5 +40,4 @@ private:
 	int32_t _colSize = 20; // 가로 크기
 
 	std::vector<ETile> _tiles;
-	std::map<ETile, char> _tileCharMap;
 };

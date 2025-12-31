@@ -1,6 +1,8 @@
 #include "GameApp.h"
 #include "GameAssert.h"
 
+#include "ContextView.h"
+
 GameApp::~GameApp()
 {
 	if (_isInitialized)
@@ -29,16 +31,23 @@ void GameApp::Startup()
 	_consoleMgr->SetVisibleCursor(false);
 	_consoleMgr->SetTitle("Snake"); // TODO: 하드 코딩 제거 필요.
 
+	IActor* contextView = _actorMgr->Create<ContextView>(&_context);
+
+	_updateActors = 
+	{
+		contextView,
+	};
+
+	_renderActors =
+	{
+		contextView,
+	};
+
 	_isInitialized = true;
 }
 
 void GameApp::Run()
 {
-	// TODO: 테스트 코드 (삭제 필요)
-	int32_t x = 10;
-	int32_t y = 10;
-	_context.SetTile(x, y, ETile::HEAD);
-
 	_timer.Start();
 
 	bool isDone = false;
@@ -46,41 +55,21 @@ void GameApp::Run()
 	{
 		UpdateTick();
 
-		int32_t newX = x;
-		int32_t newY = y;
-
-		if (_inputMgr->GetKeyPress(EKey::LEFT) == EPress::PRESSED)
+		// TODO: 일단 ESC 누르면 루프 종료.
+		if (_inputMgr->GetKeyPress(EKey::ESCAPE) == EPress::PRESSED)
 		{
-			newX--;
+			isDone = true;
+		}
+		
+		for (auto& actor : _updateActors)
+		{
+			actor->Tick(_timer.GetDeltaSeconds());
 		}
 
-		if (_inputMgr->GetKeyPress(EKey::RIGHT) == EPress::PRESSED)
+		for (auto& actor : _renderActors)
 		{
-			newX++;
+			actor->Render();
 		}
-
-		if (_inputMgr->GetKeyPress(EKey::UP) == EPress::PRESSED)
-		{
-			newY--;
-		}
-
-		if (_inputMgr->GetKeyPress(EKey::DOWN) == EPress::PRESSED)
-		{
-			newY++;
-		}
-
-		if (_context.IsValidTile(newX, newY) && !_context.IsOutline(newX, newY))
-		{
-			const ETile& tile = _context.GetTile(x, y);
-
-			_context.SetTile(x, y, ETile::EMPTY);
-
-			x = newX;
-			y = newY;
-			_context.SetTile(x, y, ETile::HEAD);
-		}
-
-		RenderManager::Get().Render(&_context);
 	}
 }
 
