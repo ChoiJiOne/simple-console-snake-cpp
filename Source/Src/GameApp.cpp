@@ -32,6 +32,7 @@ void GameApp::Startup()
 
 	_consoleMgr->SetVisibleCursor(false);
 	_consoleMgr->SetTitle("Snake"); // TODO: 하드 코딩 제거 필요.
+	_consoleMgr->Clear();
 
 	IActor* contextView = _actorMgr->Create<ContextView>(&_context);
 	IActor* snake = _actorMgr->Create<Snake>(&_context, 3, EMoveDirection::RIGHT, 0.5f);
