@@ -33,6 +33,11 @@ public:
 	bool IsValidTile(int32_t x, int32_t y);
 	bool IsOutline(int32_t x, int32_t y);
 
+	bool CanMoveTo(int32_t srcX, int32_t srcY, int32_t dstX, int32_t dstY);
+	void MoveTo(int32_t srcX, int32_t srcY, int32_t dstX, int32_t dstY);
+	bool CanSwap(int32_t srcX, int32_t srcY, int32_t dstX, int32_t dstY);
+	void Swap(int32_t srcX, int32_t srcY, int32_t dstX, int32_t dstY);
+
 private:
 	bool _isDirty = false;
 
