@@ -3,8 +3,9 @@
 #include "InputManager.h"
 #include "Snake.h"
 
-Snake::Snake(GameContext* context, int32_t defaultBodyCount, EMoveDirection defaultMoveDirection)
+Snake::Snake(GameContext* context, int32_t defaultBodyCount, EMoveDirection defaultMoveDirection, float moveIntervalTime)
 	: _moveDirection(defaultMoveDirection)
+	, _moveIntervalTime(moveIntervalTime)
 {
 	GAME_CHECK(context != nullptr);
 	_context = context;
@@ -40,8 +41,24 @@ Snake::~Snake() {}
 
 void Snake::Tick(float deltaSeconds)
 {
+	if (_isDead)
+	{
+		return;
+	}
+
 	if (!UpdateMoveDirection())
 	{
+		_moveElapsedTime += deltaSeconds;
+		if (_moveElapsedTime < _moveIntervalTime)
+		{
+			return;
+		}
+
+		EMoveResult result = Move();
+		if (result == EMoveResult::BLOCKED)
+		{
+			_isDead = true;
+		}
 		return;
 	}
 
@@ -82,7 +99,7 @@ bool Snake::UpdateMoveDirection()
 		const EKey& key = keyDirection.first;
 		const EMoveDirection& direction = keyDirection.second;
 
-		if (_inputMgr->GetKeyPress(key) == EPress::PRESSED) //  && _moveDirection != moveDirection
+		if (_inputMgr->GetKeyPress(key) == EPress::PRESSED  && _moveDirection != direction)
 		{
 			isUpdate = true;
 			_moveDirection = direction;
@@ -92,13 +109,15 @@ bool Snake::UpdateMoveDirection()
 	return isUpdate;
 }
 
-void Snake::Move()
+EMoveResult Snake::Move()
 {
+	_moveElapsedTime = 0.0f;
+
 	Position cacheHead = _head;
 	EMoveResult result = _context->Move(_head, _moveDirection);
 	if (result == EMoveResult::BLOCKED)
 	{
-		return;
+		return result;
 	}
 
 	Position tail = _bodys.back();
@@ -112,4 +131,6 @@ void Snake::Move()
 		_bodys.push_back(tail);
 		_context->SetTile(tail, ETile::BODY);
 	}
+
+	return result;
 }
