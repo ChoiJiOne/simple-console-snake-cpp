@@ -93,8 +93,8 @@ bool GameContext::CanMoveTo(int32_t srcX, int32_t srcY, int32_t dstX, int32_t ds
 		return false;
 	}
 	
-	const ETile& srcTile = GetTile(srcX, srcY);
-	const ETile& dstTile = GetTile(dstX, dstY);
+	ETile srcTile = GetTile(srcX, srcY);
+	ETile dstTile = GetTile(dstX, dstY);
 
 	bool bCanMove = false;
 	if (srcTile == ETile::HEAD)
@@ -114,23 +114,26 @@ bool GameContext::CanMoveTo(const Position& srcPosition, const Position& dstPosi
 	return CanMoveTo(srcPosition.x, srcPosition.y, dstPosition.x, dstPosition.y);
 }
 
-void GameContext::MoveTo(int32_t srcX, int32_t srcY, int32_t dstX, int32_t dstY)
+void GameContext::MoveTo(int32_t srcX, int32_t srcY, int32_t dstX, int32_t dstY, bool bKeepSrc)
 {
 	if (!CanMoveTo(srcX, srcY, dstX, dstY))
 	{
 		return;
 	}
 
-	const ETile& srcTile = GetTile(srcX, srcY);
-	const ETile& dstTile = GetTile(dstX, dstY);
+	ETile srcTile = GetTile(srcX, srcY);
+	ETile dstTile = GetTile(dstX, dstY);
 
 	SetTile(dstX, dstY, srcTile);
-	SetTile(srcX, srcY, ETile::EMPTY);
+	if (!bKeepSrc)
+	{
+		SetTile(srcX, srcY, ETile::EMPTY);
+	}
 }
 
-void GameContext::MoveTo(const Position& srcPosition, const Position& dstPosition)
+void GameContext::MoveTo(const Position& srcPosition, const Position& dstPosition, bool bKeepSrc)
 {
-	MoveTo(srcPosition.x, srcPosition.y, dstPosition.x, dstPosition.y);
+	MoveTo(srcPosition.x, srcPosition.y, dstPosition.x, dstPosition.y, bKeepSrc);
 }
 
 bool GameContext::CanSwap(int32_t srcX, int32_t srcY, int32_t dstX, int32_t dstY)
@@ -184,11 +187,11 @@ bool GameContext::CanMove(const Position& position, const EMoveDirection& moveDi
 }
 
 // TODO: CanMove / Move 반복되는 부분 정리 필요.
-void GameContext::Move(int32_t& x, int32_t& y, const EMoveDirection& moveDirection)
+EMoveResult GameContext::Move(int32_t& x, int32_t& y, const EMoveDirection& moveDirection, bool bKeepSrc)
 {
 	if (!CanMove(x, y, moveDirection))
 	{
-		return;
+		return EMoveResult::BLOCKED;
 	}
 
 	int32_t moveX = x;
@@ -197,12 +200,16 @@ void GameContext::Move(int32_t& x, int32_t& y, const EMoveDirection& moveDirecti
 	moveX += moveDirection == EMoveDirection::LEFT ? -1 : moveDirection == EMoveDirection::RIGHT ? 1 : 0;
 	moveY += moveDirection == EMoveDirection::UP ? -1 : moveDirection == EMoveDirection::DOWN ? 1 : 0;
 
-	MoveTo(x, y, moveX, moveY);
+	EMoveResult result = (GetTile(moveX, moveY) == ETile::FOOD) ? EMoveResult::CONSUME : EMoveResult::MOVED;
+
+	MoveTo(x, y, moveX, moveY, bKeepSrc);
 	x = moveX;
 	y = moveY;
+
+	return result;
 }
 
-void GameContext::Move(Position& position, const EMoveDirection& moveDirection)
+EMoveResult GameContext::Move(Position& position, const EMoveDirection& moveDirection, bool bKeepSrc)
 {
-	Move(position.x, position.y, moveDirection);
+	return Move(position.x, position.y, moveDirection, bKeepSrc);
 }

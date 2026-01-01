@@ -30,11 +30,7 @@ Snake::Snake(GameContext* context, int32_t defaultBodyCount, EMoveDirection defa
 		position.x += (_moveDirection == EMoveDirection::LEFT) ? count : (_moveDirection == EMoveDirection::RIGHT) ? -count : 0;
 		position.y += (_moveDirection == EMoveDirection::DOWN) ? count : (_moveDirection == EMoveDirection::UP) ? -count : 0;
 
-		if (_context->IsValidTile(position))
-		{
-			_bodys.push_back(position);
-			_context->SetTile(position, ETile::BODY);
-		}
+		AddBody(position);
 	}
 
 	_isInitialized = true;
@@ -57,16 +53,28 @@ void Snake::Tick(float deltaSeconds)
 		}
 	}
 
-	if (isPress && _context->CanMove(_head, _moveDirection))
+	if (!isPress)
 	{
-		Position cacheHead = _head;
-		_context->Move(_head, _moveDirection);
+		return;
+	}
 
-		Position tail = _bodys.back();
-		_bodys.pop_back();
-		_bodys.push_front(cacheHead);
+	Position cacheHead = _head;
+	EMoveResult result = _context->Move(_head, _moveDirection);
+	if (result == EMoveResult::BLOCKED)
+	{
+		return;
+	}
 
-		_context->Swap(tail, cacheHead);
+	Position tail = _bodys.back();
+	_bodys.pop_back();
+	_bodys.push_front(cacheHead);
+
+	_context->Swap(tail, cacheHead);
+
+	if (result == EMoveResult::CONSUME)
+	{
+		_bodys.push_back(tail);
+		_context->SetTile(tail, ETile::BODY);
 	}
 }
 
@@ -83,4 +91,15 @@ void Snake::Release()
 
 	_context = nullptr;
 	_isInitialized = false;
+}
+
+void Snake::AddBody(const Position& position)
+{
+	if (!_context->IsValidTile(position))
+	{
+		return;
+	}
+
+	_bodys.push_back(position);
+	_context->SetTile(position, ETile::BODY);
 }

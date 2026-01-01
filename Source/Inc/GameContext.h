@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <iostream>
 #include <map>
 #include <vector>
@@ -22,6 +23,13 @@ enum class EMoveDirection
 	RIGHT = 0x02,
 	UP = 0x03,
 	DOWN = 0x04,
+};
+
+enum class EMoveResult
+{
+	BLOCKED = 0x00,
+	MOVED   = 0x01,
+	CONSUME = 0x02,
 };
 
 // CHECKME: 나중에 하는 일 많아지면 class로 변경!
@@ -56,18 +64,18 @@ public:
 
 	bool CanMoveTo(int32_t srcX, int32_t srcY, int32_t dstX, int32_t dstY);
 	bool CanMoveTo(const Position& srcPosition, const Position& dstPosition);
-	void MoveTo(int32_t srcX, int32_t srcY, int32_t dstX, int32_t dstY);
-	void MoveTo(const Position& srcPosition, const Position& dstPosition);
+	void MoveTo(int32_t srcX, int32_t srcY, int32_t dstX, int32_t dstY, bool bKeepSrc = false);
+	void MoveTo(const Position& srcPosition, const Position& dstPosition, bool bKeepSrc = false);
 
 	bool CanSwap(int32_t srcX, int32_t srcY, int32_t dstX, int32_t dstY);
 	bool CanSwap(const Position& srcPosition, const Position& dstPosition);
 	void Swap(int32_t srcX, int32_t srcY, int32_t dstX, int32_t dstY);
 	void Swap(const Position& srcPosition, const Position& dstPosition);
-	
+
 	bool CanMove(int32_t x, int32_t y, const EMoveDirection& moveDirection);
 	bool CanMove(const Position& position, const EMoveDirection& moveDirection);
-	void Move(int32_t& x, int32_t& y, const EMoveDirection& moveDirection);
-	void Move(Position& position, const EMoveDirection& moveDirection);
+	EMoveResult Move(int32_t& x, int32_t& y, const EMoveDirection& moveDirection, bool bKeepSrc = false);
+	EMoveResult Move(Position& position, const EMoveDirection& moveDirection, bool bKeepSrc = false);
 
 private:
 	bool _isDirty = false;

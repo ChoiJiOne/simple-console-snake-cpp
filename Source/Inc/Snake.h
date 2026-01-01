@@ -19,6 +19,9 @@ public:
 	virtual void Release() override;
 
 private:
+	void AddBody(const Position& position);
+
+private:
 	GameContext* _context = nullptr;
 	InputManager* _inputMgr = nullptr;
 
