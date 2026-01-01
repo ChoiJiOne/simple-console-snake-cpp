@@ -63,6 +63,19 @@ bool GameContext::IsOutline(const Position& position)
 	return IsOutline(position.x, position.y);
 }
 
+bool GameContext::HasEmptyTile() const
+{
+	for (const auto& tile : _tiles)
+	{
+		if (tile == ETile::EMPTY)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 bool GameContext::IsValidTile(int32_t x, int32_t y)
 {
 	return (0 <= x && x <= _colSize - 1) && (0 <= y && y <= _rowSize - 1);

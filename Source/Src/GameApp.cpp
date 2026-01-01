@@ -2,6 +2,7 @@
 #include "GameAssert.h"
 
 #include "ContextView.h"
+#include "Food.h"
 #include "Snake.h"
 
 GameApp::~GameApp()
@@ -34,10 +35,12 @@ void GameApp::Startup()
 
 	IActor* contextView = _actorMgr->Create<ContextView>(&_context);
 	IActor* snake = _actorMgr->Create<Snake>(&_context, 3, EMoveDirection::RIGHT);
+	IActor* food = _actorMgr->Create<Food>(&_context);
 
 	_updateActors = 
 	{
 		snake,
+		food,
 		contextView,
 	};
 
@@ -45,6 +48,7 @@ void GameApp::Startup()
 	{
 		contextView,
 		snake,
+		food,
 	};
 
 	_isInitialized = true;

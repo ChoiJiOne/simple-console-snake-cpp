@@ -52,6 +52,7 @@ public:
 	bool IsValidTile(const Position& position);
 	bool IsOutline(int32_t x, int32_t y);
 	bool IsOutline(const Position& position);
+	bool HasEmptyTile() const;
 
 	bool CanMoveTo(int32_t srcX, int32_t srcY, int32_t dstX, int32_t dstY);
 	bool CanMoveTo(const Position& srcPosition, const Position& dstPosition);

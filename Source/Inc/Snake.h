@@ -19,7 +19,7 @@ public:
 	virtual void Release() override;
 
 private:
-	GameContext* _context;
+	GameContext* _context = nullptr;
 	InputManager* _inputMgr = nullptr;
 
 	EMoveDirection _moveDirection = EMoveDirection::RIGHT;
