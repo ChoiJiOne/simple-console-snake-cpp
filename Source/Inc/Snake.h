@@ -18,6 +18,8 @@ public:
 	virtual void Render() override;
 	virtual void Release() override;
 
+	void SetMoveIntervalTime(float moveIntervalTime) { _moveIntervalTime = moveIntervalTime; }
+
 private:
 	void AddBody(const Position& position);
 	bool UpdateMoveDirection(); // NOTE: 값이 변경된 것이 있으면 TRUE 반환.
