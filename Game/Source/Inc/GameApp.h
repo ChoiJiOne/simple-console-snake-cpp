@@ -1,16 +1,9 @@
 #pragma once
 
-#include <memory>
-
-#include "ActorManager.h"
-#include "ConsoleManager.h"
+#include "IApp.h"
 #include "GameContext.h"
-#include "GameMacro.h"
-#include "GameTimer.h"
-#include "InputManager.h"
-#include "RenderManager.h"
 
-class GameApp
+class GameApp : public IApp
 {
 public:
 	GameApp() = default;
@@ -18,26 +11,14 @@ public:
 
 	DISALLOW_COPY_AND_ASSIGN(GameApp);
 
-	void Startup();
-	void Run();
-	void Shutdown();
+	virtual void Startup() override;
+	virtual void Shutdown() override;
 
 private:
-	void UpdateTick();
+	void ProcessTick(float deltaSeconds);
 
 private:
-	bool _isInitialized = false;
-
-	ConsoleManager* _consoleMgr = nullptr;
-	InputManager* _inputMgr = nullptr;
-	RenderManager* _renderMgr = nullptr;
-	ActorManager* _actorMgr = nullptr;
-
-	GameTimer _timer;
-
 	std::vector<IActor*> _updateActors;
 	std::vector<IActor*> _renderActors;
-
-private: // 게임 특화 로직
 	GameContext _context;
 };

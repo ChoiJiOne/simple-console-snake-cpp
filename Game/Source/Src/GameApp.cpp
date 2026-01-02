@@ -20,15 +20,7 @@ void GameApp::Startup()
 		return; // TODO: 에러 로그 처리 필요.
 	}
 
-	_consoleMgr = ConsoleManager::GetPtr();
-	_inputMgr = InputManager::GetPtr();
-	_renderMgr = RenderManager::GetPtr();
-	_actorMgr = ActorManager::GetPtr();
-
-	_consoleMgr->Startup();
-	_inputMgr->Startup();
-	_renderMgr->Startup();
-	_actorMgr->Startup();
+	IApp::Startup();
 
 	_consoleMgr->SetVisibleCursor(false);
 	_consoleMgr->SetTitle("Snake"); // TODO: 하드 코딩 제거 필요.
@@ -52,34 +44,12 @@ void GameApp::Startup()
 		food,
 	};
 
+	SetProcessTick([this](float deltaSeconds)
+		{
+			ProcessTick(deltaSeconds);
+		});
+
 	_isInitialized = true;
-}
-
-void GameApp::Run()
-{
-	_timer.Start();
-
-	bool isDone = false;
-	while (!isDone)
-	{
-		UpdateTick();
-
-		// TODO: 일단 ESC 누르면 루프 종료.
-		if (_inputMgr->GetKeyPress(EKey::ESCAPE) == EPress::PRESSED)
-		{
-			isDone = true;
-		}
-		
-		for (auto& actor : _updateActors)
-		{
-			actor->Tick(_timer.GetDeltaSeconds());
-		}
-
-		for (auto& actor : _renderActors)
-		{
-			actor->Render();
-		}
-	}
 }
 
 void GameApp::Shutdown()
@@ -91,20 +61,23 @@ void GameApp::Shutdown()
 
 	_consoleMgr->SetVisibleCursor(true);
 
-	_actorMgr->Shutdown();
-	_renderMgr->Shutdown();
-	_inputMgr->Shutdown();
-	_consoleMgr->Shutdown();
-
-	_actorMgr = nullptr;
-	_renderMgr = nullptr;
-	_inputMgr = nullptr;
-	_consoleMgr = nullptr;
-	_isInitialized = false;
+	IApp::Shutdown();
 }
 
-void GameApp::UpdateTick()
+void GameApp::ProcessTick(float deltaSeconds)
 {
-	_timer.Tick();
-	_inputMgr->Tick();
+	if (_inputMgr->GetKeyPress(EKey::ESCAPE) == EPress::PRESSED)
+	{
+		SetDoneLoop(true);
+	}
+
+	for (auto& actor : _updateActors)
+	{
+		actor->Tick(deltaSeconds);
+	}
+
+	for (auto& actor : _renderActors)
+	{
+		actor->Render();
+	}
 }
