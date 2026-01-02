@@ -3,6 +3,7 @@
 
 #include "ContextView.h"
 #include "Food.h"
+#include "PauseOrQuitActor.h"
 #include "Snake.h"
 
 GameApp::~GameApp()
@@ -29,9 +30,11 @@ void GameApp::Startup()
 	IActor* contextView = _actorMgr->Create<ContextView>(&_context);
 	IActor* snake = _actorMgr->Create<Snake>(&_context, 3, EMoveDirection::RIGHT, 0.5f);
 	IActor* food = _actorMgr->Create<Food>(&_context);
+	IActor* pauseOrQuitActor = _actorMgr->Create<PauseOrQuitActor>(this);
 
 	_updateActors = 
-	{
+	{ 
+		pauseOrQuitActor,
 		snake,
 		food,
 		contextView,
@@ -42,11 +45,20 @@ void GameApp::Startup()
 		contextView,
 		snake,
 		food,
+		pauseOrQuitActor,
 	};
 
 	SetProcessTick([this](float deltaSeconds)
 		{
-			ProcessTick(deltaSeconds);
+			for (auto& actor : _updateActors)
+			{
+				actor->Tick(deltaSeconds);
+			}
+
+			for (auto& actor : _renderActors)
+			{
+				actor->Render();
+			}
 		});
 
 	_isInitialized = true;
@@ -62,22 +74,4 @@ void GameApp::Shutdown()
 	_consoleMgr->SetVisibleCursor(true);
 
 	IApp::Shutdown();
-}
-
-void GameApp::ProcessTick(float deltaSeconds)
-{
-	if (_inputMgr->GetKeyPress(EKey::ESCAPE) == EPress::PRESSED)
-	{
-		SetDoneLoop(true);
-	}
-
-	for (auto& actor : _updateActors)
-	{
-		actor->Tick(deltaSeconds);
-	}
-
-	for (auto& actor : _renderActors)
-	{
-		actor->Render();
-	}
 }

@@ -15,9 +15,6 @@ public:
 	virtual void Shutdown() override;
 
 private:
-	void ProcessTick(float deltaSeconds);
-
-private:
 	std::vector<IActor*> _updateActors;
 	std::vector<IActor*> _renderActors;
 	GameContext _context;
