@@ -1,11 +1,23 @@
 #include "IApp.h"
 #include "GameAssert.h"
 
+IApp* IApp::_app = nullptr;
+
+IApp::IApp()
+{
+	_app = this;
+}
+
 IApp::~IApp()
 {
 	if (_isInitialized)
 	{
 		Shutdown();
+	}
+
+	if (_app != nullptr)
+	{
+		_app = nullptr;
 	}
 }
 

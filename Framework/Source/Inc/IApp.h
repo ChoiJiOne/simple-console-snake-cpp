@@ -13,7 +13,7 @@
 class IApp
 {
 public:
-	IApp() = default;
+	IApp();
 	virtual ~IApp();
 
 	virtual void Startup();
@@ -22,6 +22,8 @@ public:
 	void Run();
 	void SetDoneLoop(bool isDoneLoop) { _isDoneLoop = isDoneLoop; }
 	void SetProcessTick(const std::function<void(float)>& processTick) { _processTick = processTick; }
+
+	static IApp* GetApp() { return _app; }
 
 protected:
 	bool _isInitialized = false;
@@ -35,6 +37,8 @@ private:
 	void UpdateTick();
 
 private:
+	static IApp* _app;
+
 	bool _isDoneLoop = false;
 
 	std::function<void(float)> _processTick;
