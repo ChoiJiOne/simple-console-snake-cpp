@@ -15,6 +15,18 @@ GameContext::GameContext()
 			}
 		}
 	}
+
+	// TODO: 나중에 혹은 다른 프로젝트할 때는 읽기 전용 파일 읽어서 처리하기.
+	_levelInfos = 
+	{
+		LevelInfo(/*LEVEL*/ 1, /*MIN*/  1, /*MAX*/  5, /*INTERVAL*/ 0.7f),
+		LevelInfo(/*LEVEL*/ 2, /*MIN*/  5, /*MAX*/ 10, /*INTERVAL*/ 0.6f),
+		LevelInfo(/*LEVEL*/ 3, /*MIN*/ 10, /*MAX*/ 15, /*INTERVAL*/ 0.5f),
+		LevelInfo(/*LEVEL*/ 4, /*MIN*/ 15, /*MAX*/ 20, /*INTERVAL*/ 0.4f),
+		LevelInfo(/*LEVEL*/ 5, /*MIN*/ 20, /*MAX*/ 25, /*INTERVAL*/ 0.3f),
+		LevelInfo(/*LEVEL*/ 6, /*MIN*/ 25, /*MAX*/ 30, /*INTERVAL*/ 0.2f),
+		LevelInfo(/*LEVEL*/ 7, /*MIN*/ 30, /*MAX*/ 35, /*INTERVAL*/ 0.1f),
+	};
 }
 
 GameContext::~GameContext()

@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "GameMacro.h"
+#include "LevelInfo.h"
 
 enum class ETile
 {
@@ -84,4 +85,7 @@ private:
 	int32_t _colSize = 20; // 가로 크기
 
 	std::vector<ETile> _tiles;
+
+	int32_t _level = 1;
+	std::vector<LevelInfo> _levelInfos;
 };
