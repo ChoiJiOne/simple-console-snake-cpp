@@ -13,10 +13,9 @@ Food::Food(GameContext* context)
 	_minPosition = { 1, 1 };
 	_maxPosition = { _context->GetColSize() - 2, _context->GetRowSize() - 2 };
 
-	_countViewPosition = { 22, 3 };
-
 	Spawn();
 
+	_countViewPosition = { 22, 3 };
 	_isInitialized = true;
 }
 
