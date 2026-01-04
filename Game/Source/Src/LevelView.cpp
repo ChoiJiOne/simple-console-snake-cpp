@@ -9,8 +9,7 @@ LevelView::LevelView(GameContext* context)
 	_context = context;
 	_consoleMgr = ConsoleManager::GetPtr();
 
-	_levelViewPosition = { 22, 5 };
-	_levelStepViewPosition = { 22, 7 };
+	_levelViewPosition = { 21, 5 };
 	_isInitialized = true;
 }
 
@@ -34,9 +33,7 @@ void LevelView::Render()
 		return;
 	}
 
-	_consoleMgr->Print(_levelViewPosition.x, _levelViewPosition.y, StringUtils::PrintF("LEVEL: %2d", _level));
-	
-	Position consolePosition = _levelStepViewPosition;
+	Position consolePosition = _levelViewPosition;
 
 	const std::vector<LevelInfo>& levelInfos = _context->GetLevelInfos();
 	for (const auto& levelInfo : levelInfos)
@@ -44,7 +41,7 @@ void LevelView::Render()
 		int32_t level = levelInfo.GetLevel();
 		char mark = level == _level ? '*' : ' ';
 
-		_consoleMgr->Print(consolePosition.x, consolePosition.y, StringUtils::PrintF("%c LEVEL: %2d %c", mark, level, mark));
+		_consoleMgr->Print(consolePosition.x, consolePosition.y, StringUtils::PrintF("%cLEVEL:%2d%c", mark, level, mark));
 		consolePosition.y++;
 	}
 
