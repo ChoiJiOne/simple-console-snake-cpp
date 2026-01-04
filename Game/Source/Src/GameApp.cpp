@@ -34,8 +34,8 @@ void GameApp::Startup()
 	IActor* levelView = _actorMgr->Create<LevelView>(&_context);
 	IActor* pauseOrQuitActor = _actorMgr->Create<PauseOrQuitActor>(this);
 
-	_updateActors = 
-	{ 
+	std::vector<IActor*> updateActors =
+	{
 		pauseOrQuitActor,
 		snake,
 		foodView,
@@ -43,7 +43,7 @@ void GameApp::Startup()
 		contextView,
 	};
 
-	_renderActors =
+	std::vector<IActor*> renderActors =
 	{
 		contextView,
 		snake,
@@ -52,16 +52,26 @@ void GameApp::Startup()
 		pauseOrQuitActor,
 	};
 
+	SetGameStateActors(EGameState::PLAYING, updateActors, renderActors);
+
 	SetProcessTick([this](float deltaSeconds)
 		{
-			for (auto& actor : _updateActors)
+			auto& updateActors = _updateActorsMap.find(_gameState);
+			if (updateActors != _updateActorsMap.end()) // TOCO: 못 찾았을 때 에러 처리 필요.
 			{
-				actor->Tick(deltaSeconds);
+				for (auto& actor : updateActors->second)
+				{
+					actor->Tick(deltaSeconds);
+				}
 			}
 
-			for (auto& actor : _renderActors)
+			auto& renderActors = _renderActorsMap.find(_gameState);
+			if (renderActors != _renderActorsMap.end()) // TOCO: 못 찾았을 때 에러 처리 필요.
 			{
-				actor->Render();
+				for (auto& actor : renderActors->second)
+				{
+					actor->Render();
+				}
 			}
 		});
 
@@ -78,4 +88,10 @@ void GameApp::Shutdown()
 	_consoleMgr->SetVisibleCursor(true);
 
 	IApp::Shutdown();
+}
+
+void GameApp::SetGameStateActors(const EGameState& gameState, const std::vector<IActor*>& updateActors, const std::vector<IActor*>& renderActors)
+{
+	_updateActorsMap[gameState] = updateActors;
+	_renderActorsMap[gameState] = renderActors;
 }
