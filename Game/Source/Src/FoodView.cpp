@@ -1,7 +1,6 @@
 #include "ConsoleManager.h"
 #include "GameAssert.h"
 #include "FoodView.h"
-#include "MathUtils.h"
 #include "StringUtils.h"
 
 FoodView::FoodView(GameContext* context)
