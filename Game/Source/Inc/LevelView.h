@@ -22,6 +22,7 @@ private:
 	ConsoleManager* _consoleMgr = nullptr;
 
 	Position _levelViewPosition = { 0, 0 };
+	Position _levelStepViewPosition = { 0, 0 };
 	bool _isDirty = false;
 	int32_t _level = 0;
 };

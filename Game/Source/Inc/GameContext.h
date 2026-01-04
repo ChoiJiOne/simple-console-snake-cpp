@@ -85,6 +85,7 @@ public:
 	EMoveResult Move(int32_t& x, int32_t& y, const EMoveDirection& moveDirection, bool bKeepSrc = false);
 	EMoveResult Move(Position& position, const EMoveDirection& moveDirection, bool bKeepSrc = false);
 
+	const std::vector<LevelInfo>& GetLevelInfos() const { return _levelInfos; }
 	const LevelInfo& GetCurrentLevelInfo();
 	bool TryLevelUp();
 

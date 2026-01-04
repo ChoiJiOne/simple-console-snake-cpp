@@ -10,6 +10,7 @@ LevelView::LevelView(GameContext* context)
 	_consoleMgr = ConsoleManager::GetPtr();
 
 	_levelViewPosition = { 22, 5 };
+	_levelStepViewPosition = { 22, 7 };
 	_isInitialized = true;
 }
 
@@ -34,6 +35,19 @@ void LevelView::Render()
 	}
 
 	_consoleMgr->Print(_levelViewPosition.x, _levelViewPosition.y, StringUtils::PrintF("LEVEL: %2d", _level));
+	
+	Position consolePosition = _levelStepViewPosition;
+
+	const std::vector<LevelInfo>& levelInfos = _context->GetLevelInfos();
+	for (const auto& levelInfo : levelInfos)
+	{
+		int32_t level = levelInfo.GetLevel();
+		char mark = level == _level ? '*' : ' ';
+
+		_consoleMgr->Print(consolePosition.x, consolePosition.y, StringUtils::PrintF("%c LEVEL: %2d %c", mark, level, mark));
+		consolePosition.y++;
+	}
+
 	_isDirty = false;;
 }
 
