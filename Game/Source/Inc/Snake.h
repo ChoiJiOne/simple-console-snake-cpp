@@ -9,7 +9,7 @@
 class Snake : public IActor
 {
 public:
-	Snake(GameContext* context, int32_t defaultBodyCount, EMoveDirection defaultMoveDirection, float moveIntervalTime);
+	Snake(GameContext* context, int32_t defaultBodyCount, EMoveDirection defaultMoveDirection);
 	virtual ~Snake();
 
 	DISALLOW_COPY_AND_ASSIGN(Snake);
@@ -19,8 +19,10 @@ public:
 	virtual void Release() override;
 
 	void SetMoveIntervalTime(float moveIntervalTime) { _moveIntervalTime = moveIntervalTime; }
+	void Reset();
 
 private:
+	void ClearBodys();
 	void AddBody(const Position& position);
 	bool UpdateMoveDirection(); // NOTE: 값이 변경된 것이 있으면 TRUE 반환.
 	EMoveResult Move();
@@ -28,6 +30,9 @@ private:
 private:
 	GameContext* _context = nullptr;
 	InputManager* _inputMgr = nullptr;
+
+	int32_t _defaultBodyCount;
+	EMoveDirection _defaultMoveDirection;
 
 	EMoveDirection _prevMoveDirection = EMoveDirection::NONE;
 	EMoveDirection _currMoveDirection = EMoveDirection::RIGHT;

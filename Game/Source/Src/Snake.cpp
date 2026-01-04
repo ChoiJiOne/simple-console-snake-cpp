@@ -3,10 +3,11 @@
 #include "InputManager.h"
 #include "Snake.h"
 
-Snake::Snake(GameContext* context, int32_t defaultBodyCount, EMoveDirection defaultMoveDirection, float moveIntervalTime)
-	: _prevMoveDirection(defaultMoveDirection)
+Snake::Snake(GameContext* context, int32_t defaultBodyCount, EMoveDirection defaultMoveDirection)
+	: _defaultBodyCount(defaultBodyCount)
+	, _defaultMoveDirection(defaultMoveDirection)
+	, _prevMoveDirection(defaultMoveDirection)
 	, _currMoveDirection(defaultMoveDirection)
-	, _moveIntervalTime(moveIntervalTime)
 {
 	GAME_CHECK(context != nullptr);
 	_context = context;
@@ -22,20 +23,7 @@ Snake::Snake(GameContext* context, int32_t defaultBodyCount, EMoveDirection defa
 		{ EKey::DOWN,  EMoveDirection::DOWN},
 	};
 
-	_head = { _context->GetColSize() / 2, _context->GetRowSize() / 2};
-	_context->SetTile(_head, ETile::HEAD);
-
-	for (int32_t count = 1; count <= defaultBodyCount; ++count)
-	{
-		Position position = _head;
-		position.x += (_currMoveDirection == EMoveDirection::LEFT) ? count : (_currMoveDirection == EMoveDirection::RIGHT) ? -count : 0;
-		position.y += (_currMoveDirection == EMoveDirection::DOWN) ? count : (_currMoveDirection == EMoveDirection::UP) ? -count : 0;
-
-		AddBody(position);
-	}
-
-	const LevelInfo& levelInfo = _context->GetCurrentLevelInfo();
-	_moveIntervalTime = levelInfo.GetIntervalTime();
+	Reset();
 
 	_isInitialized = true;
 }
@@ -94,6 +82,33 @@ void Snake::Release()
 
 	_context = nullptr;
 	_isInitialized = false;
+}
+
+void Snake::Reset()
+{
+	_prevMoveDirection = _defaultMoveDirection;
+	_currMoveDirection = _defaultMoveDirection;
+
+	_head = { _context->GetColSize() / 2, _context->GetRowSize() / 2 };
+	_context->SetTile(_head, ETile::HEAD);
+
+	ClearBodys();
+	for (int32_t count = 1; count <= _defaultBodyCount; ++count)
+	{
+		Position position = _head;
+		position.x += (_currMoveDirection == EMoveDirection::LEFT) ? count : (_currMoveDirection == EMoveDirection::RIGHT) ? -count : 0;
+		position.y += (_currMoveDirection == EMoveDirection::DOWN) ? count : (_currMoveDirection == EMoveDirection::UP) ? -count : 0;
+
+		AddBody(position);
+	}
+
+	const LevelInfo& levelInfo = _context->GetCurrentLevelInfo();
+	_moveIntervalTime = levelInfo.GetIntervalTime();
+}
+
+void Snake::ClearBodys()
+{
+	_bodys.clear();
 }
 
 void Snake::AddBody(const Position& position)

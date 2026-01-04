@@ -29,7 +29,7 @@ void GameApp::Startup()
 	_consoleMgr->Clear();
 
 	IActor* contextView = _actorMgr->Create<ContextView>(&_context);
-	IActor* snake = _actorMgr->Create<Snake>(&_context, 3, EMoveDirection::RIGHT, 0.5f);
+	IActor* snake = _actorMgr->Create<Snake>(&_context, 3, EMoveDirection::RIGHT);
 	IActor* foodView = _actorMgr->Create<FoodView>(&_context);
 	IActor* levelView = _actorMgr->Create<LevelView>(&_context);
 	IActor* pauseOrQuitActor = _actorMgr->Create<PauseOrQuitActor>(this);
