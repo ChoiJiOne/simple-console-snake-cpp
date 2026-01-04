@@ -52,16 +52,19 @@ public:
 	void SetTile(const Position& position, const ETile& tile);
 	void SetDirty(bool isDirty) { _isDirty = isDirty; }
 
-	const ETile& GetTile(int32_t x, int32_t y);
-	const ETile& GetTile(const Position& position);
+	const ETile& GetTile(int32_t x, int32_t y) const;
+	const ETile& GetTile(const Position& position) const;
 	const int32_t& GetRowSize() const { return _rowSize; }
 	const int32_t& GetColSize() const { return _colSize; }
 	bool IsDirty() const { return _isDirty; }
-	bool IsValidTile(int32_t x, int32_t y);
-	bool IsValidTile(const Position& position);
-	bool IsOutline(int32_t x, int32_t y);
-	bool IsOutline(const Position& position);
+	bool IsValidTile(int32_t x, int32_t y) const;
+	bool IsValidTile(const Position& position) const;
+	bool IsOutline(int32_t x, int32_t y) const;
+	bool IsOutline(const Position& position) const;
 	bool HasEmptyTile() const;
+	const int32_t& GetSpawnedFoodCount() const { return _spawnedFoodCount; }
+
+	bool TrySpawnFood(Position& outFoodPosition);
 
 	bool CanMoveTo(int32_t srcX, int32_t srcY, int32_t dstX, int32_t dstY);
 	bool CanMoveTo(const Position& srcPosition, const Position& dstPosition);
@@ -81,12 +84,19 @@ public:
 	const LevelInfo& GetCurrentLevelInfo();
 
 private:
+	Position GetRandomEmptyPosition() const;
+
+private:
 	bool _isDirty = false;
 
 	int32_t _rowSize = 20; // 세로 크기
 	int32_t _colSize = 20; // 가로 크기
 
 	std::vector<ETile> _tiles;
+
+	Position _minPosition = { 0, 0 };
+	Position _maxPosition = { 0, 0 };
+	int32_t _spawnedFoodCount = 0;
 
 	int32_t _minLevel = 0;
 	int32_t _maxLevel = 0;

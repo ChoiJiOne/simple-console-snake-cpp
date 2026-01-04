@@ -1,6 +1,7 @@
 #include "ConsoleManager.h"
 #include "GameAssert.h"
 #include "GameContext.h"
+#include "MathUtils.h"
 
 GameContext::GameContext()
 {
@@ -15,6 +16,9 @@ GameContext::GameContext()
 			}
 		}
 	}
+
+	_minPosition = { 1, 1 };
+	_maxPosition = { _colSize - 2, _rowSize - 2 };
 
 	// TODO: 나중에 혹은 다른 프로젝트할 때는 읽기 전용 파일 읽어서 처리하기.
 	_levelInfos = 
@@ -56,7 +60,7 @@ void GameContext::SetTile(const Position& position, const ETile& tile)
 	return SetTile(position.x, position.y, tile);
 }
 
-const ETile& GameContext::GetTile(int32_t x, int32_t y)
+const ETile& GameContext::GetTile(int32_t x, int32_t y) const
 {
 	GAME_CHECK(IsValidTile(x, y));
 
@@ -64,17 +68,17 @@ const ETile& GameContext::GetTile(int32_t x, int32_t y)
 	return _tiles[offset];
 }
 
-const ETile& GameContext::GetTile(const Position& position)
+const ETile& GameContext::GetTile(const Position& position) const
 {
 	return GetTile(position.x, position.y);
 }
 
-bool GameContext::IsOutline(int32_t x, int32_t y)
+bool GameContext::IsOutline(int32_t x, int32_t y) const
 {
 	return (x <= 0 || x >= _colSize - 1) || (y <= 0 || y >= _rowSize - 1);
 }
 
-bool GameContext::IsOutline(const Position& position)
+bool GameContext::IsOutline(const Position& position) const
 {
 	return IsOutline(position.x, position.y);
 }
@@ -92,12 +96,26 @@ bool GameContext::HasEmptyTile() const
 	return false;
 }
 
-bool GameContext::IsValidTile(int32_t x, int32_t y)
+bool GameContext::TrySpawnFood(Position& outFoodPosition)
+{
+	if (!HasEmptyTile())
+	{
+		return false;
+	}
+
+	outFoodPosition = GetRandomEmptyPosition();
+	SetTile(outFoodPosition, ETile::FOOD);
+	_spawnedFoodCount++;
+
+	return true;
+}
+
+bool GameContext::IsValidTile(int32_t x, int32_t y) const
 {
 	return (0 <= x && x <= _colSize - 1) && (0 <= y && y <= _rowSize - 1);
 }
 
-bool GameContext::IsValidTile(const Position& position)
+bool GameContext::IsValidTile(const Position& position) const
 {
 	return IsValidTile(position.x, position.y);
 }
@@ -242,4 +260,34 @@ const LevelInfo& GameContext::GetCurrentLevelInfo()
 
 	// 만약 찾지 못했으면 가장 마지막 요소 반환.
 	return _levelInfos.back();
+}
+
+Position GameContext::GetRandomEmptyPosition() const
+{
+	Position randomPosition{ -1, -1 };
+	if (!HasEmptyTile())
+	{
+		return randomPosition;
+	}
+
+	// NOTE: 진짜 수상하게 무한루프(?) 돌아야 하는지 확인 필요 (물론 진짜 무한 루프 돌일은 거의 없을거 같지만 혹시 몰라서...)
+	bool bFoundRandomPosition = false;
+	while (!bFoundRandomPosition)
+	{
+		randomPosition.x = MathUtils::GenerateRandomInt(_minPosition.x, _maxPosition.x);
+		randomPosition.y = MathUtils::GenerateRandomInt(_minPosition.y, _maxPosition.y);
+
+		if (!IsValidTile(randomPosition))
+		{
+			continue;
+		}
+
+		const ETile& tile = GetTile(randomPosition);
+		if (tile == ETile::EMPTY)
+		{
+			bFoundRandomPosition = true;
+		}
+	}
+
+	return randomPosition;
 }

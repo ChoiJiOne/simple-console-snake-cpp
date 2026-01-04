@@ -18,18 +18,11 @@ public:
 	virtual void Release() override;
 
 private:
-	void Spawn();
-	Position GetValidRandomPosition() const;
-
-private:
 	GameContext* _context = nullptr;
 	ConsoleManager* _consoleMgr = nullptr;
 
-	Position _minPosition = { 0, 0 };
-	Position _maxPosition = { 0, 0 };
-
 	Position _position = { 0, 0 };
-	
+
 	Position _countViewPosition = { 0, 0 };
 	bool _isDirty = false;
 	int32_t _count = 0;

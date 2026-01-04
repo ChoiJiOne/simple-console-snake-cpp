@@ -10,10 +10,9 @@ Food::Food(GameContext* context)
 	_context = context;
 	_consoleMgr = ConsoleManager::GetPtr();
 
-	_minPosition = { 1, 1 };
-	_maxPosition = { _context->GetColSize() - 2, _context->GetRowSize() - 2 };
-
-	Spawn();
+	_context->TrySpawnFood(_position); // CHECKME: 이거 실패했을 때 처리 필요한 지 확인 필요.
+	_count = _context->GetSpawnedFoodCount();
+	_isDirty = true; // CHECKME: 이거 없으면 0개일 때 표시 안함.
 
 	_countViewPosition = { 22, 3 };
 	_isInitialized = true;
@@ -26,8 +25,14 @@ void Food::Tick(float deltaSeconds)
 	const ETile& tile = _context->GetTile(_position);
 	if (tile != ETile::FOOD)
 	{
-		Spawn();
-		return;
+		if (!_context->TrySpawnFood(_position))
+		{
+			// TODO: 여기에 게임 오버 처리 필요.
+			return;
+		}
+		
+		_count = _context->GetSpawnedFoodCount();
+		_isDirty = true;
 	}
 }
 
@@ -51,47 +56,4 @@ void Food::Release()
 
 	_context = nullptr;
 	_isInitialized = false;
-}
-
-void Food::Spawn()
-{
-	if (!_context->HasEmptyTile())
-	{
-		return;
-	}
-
-	_position = GetValidRandomPosition();
-	_context->SetTile(_position, ETile::FOOD);
-	_isDirty = true;
-	_count++;
-}
-
-Position Food::GetValidRandomPosition() const
-{
-	Position randomPosition{ -1, -1 };
-	if (!_context->HasEmptyTile())
-	{
-		return randomPosition;
-	}
-
-	// NOTE: 진짜 수상하게 무한루프(?) 돌아야 하는지 확인 필요 (물론 진짜 무한 루프 돌일은 거의 없을거 같지만 혹시 몰라서...)
-	bool bFoundRandomPosition = false;
-	while (!bFoundRandomPosition)
-	{
-		randomPosition.x = MathUtils::GenerateRandomInt(_minPosition.x, _maxPosition.x);
-		randomPosition.y = MathUtils::GenerateRandomInt(_minPosition.y, _maxPosition.y);
-
-		if (!_context->IsValidTile(randomPosition))
-		{
-			continue;
-		}
-
-		const ETile& tile = _context->GetTile(randomPosition);
-		if (tile == ETile::EMPTY)
-		{
-			bFoundRandomPosition = true;
-		}
-	}
-
-	return randomPosition;
 }
