@@ -17,6 +17,8 @@ public:
 	virtual void Render() override;
 	virtual void Release() override;
 
+	void Reset();
+
 private:
 	GameContext* _context = nullptr;
 	ConsoleManager* _consoleMgr = nullptr;
