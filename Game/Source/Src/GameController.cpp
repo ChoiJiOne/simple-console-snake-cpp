@@ -49,6 +49,7 @@ void GameController::Release()
 	}
 
 	_app = nullptr;
+	_context = nullptr;
 	_isInitialized = false;
 }
 
