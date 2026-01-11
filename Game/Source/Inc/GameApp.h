@@ -8,8 +8,6 @@ enum class EGameState
 	NONE = 0x00,
 	READY = 0x01,
 	PLAY = 0x02,
-	PAUSE = 0x03,
-	GAME_OVER = 0x04,
 };
 
 class GameApp : public IApp

@@ -17,6 +17,8 @@ public:
 	virtual void Render() override;
 	virtual void Release() override;
 
+	void Reset();
+
 private:
 	ConsoleManager* _consoleMgr = nullptr;
 	bool _isDirty = true;

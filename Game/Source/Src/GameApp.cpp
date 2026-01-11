@@ -4,8 +4,6 @@
 #include "ContextView.h"
 #include "FoodView.h"
 #include "GameController.h"
-#include "GameOverView.h"
-#include "GameStateView.h"
 #include "ReadyView.h"
 #include "Snake.h"
 
@@ -35,8 +33,6 @@ void GameApp::Startup()
 	Snake* snake = _actorMgr->Create<Snake>(&_context, 3, EMoveDirection::RIGHT);
 	FoodView* foodView = _actorMgr->Create<FoodView>(&_context);
 	GameController* gameController = _actorMgr->Create<GameController>(this, &_context);
-	GameOverView* gameOverView = _actorMgr->Create<GameOverView>(&_context);
-	GameStateView* gameStateView = _actorMgr->Create<GameStateView>(this);
 
 	std::vector<IActor*> readyStateUpdateActors = 
 	{ 
@@ -49,7 +45,12 @@ void GameApp::Startup()
 		readyView,
 		gameController,
 	};
-	SetGameStateActors(EGameState::READY, readyStateUpdateActors, readyStateRenderActors, nullptr);
+	SetGameStateActors(EGameState::READY, readyStateUpdateActors, readyStateRenderActors, 
+		[this, readyView]()
+		{
+			_context.Reset();
+			readyView->Reset();
+		});
 
 	std::vector<IActor*> playStateUpdateActors =
 	{
@@ -57,7 +58,6 @@ void GameApp::Startup()
 		snake,
 		foodView,
 		contextView,
-		gameStateView,
 	};
 
 	std::vector<IActor*> playStateRenderActors =
@@ -66,55 +66,15 @@ void GameApp::Startup()
 		snake,
 		foodView,
 		gameController,
-		gameStateView,
 	};
 	SetGameStateActors(EGameState::PLAY, playStateUpdateActors, playStateRenderActors,
-		[this, snake, gameOverView]()
+		[this, snake]()
 		{
-			_context.Reset();
 			snake->Reset();
-			gameOverView->Reset();
 			_context.TrySpawnFood();
 		}
 	);
-
-	std::vector<IActor*> pauseStateUpdateActors =
-	{
-		gameController,
-		foodView,
-		contextView,
-		gameStateView,
-	};
-
-	std::vector<IActor*> pauseStateRenderActors =
-	{
-		contextView,
-		snake,
-		foodView,
-		gameController,
-		gameStateView,
-	};
-	SetGameStateActors(EGameState::PAUSE, pauseStateUpdateActors, pauseStateRenderActors, nullptr);
-
-	std::vector<IActor*> gameOverStateUpdateActors =
-	{
-		gameController,
-		foodView,
-		contextView,
-		gameStateView,
-	};
-
-	std::vector<IActor*> gameOverStateRenderActors =
-	{
-		contextView,
-		snake,
-		foodView,
-		gameController,
-		gameOverView,
-		gameStateView,
-	};
-	SetGameStateActors(EGameState::GAME_OVER, gameOverStateUpdateActors, gameOverStateRenderActors, nullptr);
-
+	
 	SetProcessTick([this](float deltaSeconds) { ProcessTick(deltaSeconds); });
 
 	_isInitialized = true;

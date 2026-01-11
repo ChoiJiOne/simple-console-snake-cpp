@@ -23,8 +23,6 @@ public:
 private:
 	void ProcessReadyStateTick();
 	void ProcessPlayStateTick();
-	void ProcessPauseStateTick();
-	void ProcessGameOverStateTick();
 
 private:
 	GameApp* _app = nullptr;
@@ -32,6 +30,4 @@ private:
 	InputManager* _inputMgr = nullptr;
 
 	std::map<EGameState, std::function<void()>> _stateProcessActionMap;
-
-	Position _gameStartKeyViewPosition = { 0, 0 };
 };

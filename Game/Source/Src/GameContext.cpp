@@ -30,6 +30,11 @@ void GameContext::Reset()
 
 	_isGameOver = false;
 	_spawnedFoodCount = 0;
+
+	if (_maxSpawnedFoodCount < _spawnedFoodCount)
+	{
+		_maxSpawnedFoodCount = _spawnedFoodCount;
+	}
 }
 
 void GameContext::SetTile(int32_t x, int32_t y, const ETile& tile, bool bForceSet)

@@ -47,3 +47,8 @@ void ReadyView::Release()
 
 	_isInitialized = false;
 }
+
+void ReadyView::Reset()
+{
+	_isDirty = true;
+}

@@ -66,6 +66,7 @@ public:
 	bool IsOutline(const Position& position) const;
 	bool HasEmptyTile() const;
 	const int32_t& GetSpawnedFoodCount() const { return _spawnedFoodCount; }
+	const int32_t& GetMaxSpawnedFoodCount() const { return _maxSpawnedFoodCount; }
 
 	bool TrySpawnFood();
 
@@ -101,5 +102,6 @@ private:
 	Position _minPosition = { 0, 0 };
 	Position _maxPosition = { 0, 0 };
 	int32_t _spawnedFoodCount = 0;
+	int32_t _maxSpawnedFoodCount = 0;
 	float _moveSpeed = 0.5f;
 };

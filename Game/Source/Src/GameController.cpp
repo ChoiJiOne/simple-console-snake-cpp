@@ -17,8 +17,6 @@ GameController::GameController(GameApp* app, GameContext* context)
 
 	_stateProcessActionMap[EGameState::READY] = [this]() { ProcessReadyStateTick(); };
 	_stateProcessActionMap[EGameState::PLAY] = [this]() { ProcessPlayStateTick(); };
-	_stateProcessActionMap[EGameState::PAUSE] = [this]() { ProcessPauseStateTick(); };
-	_stateProcessActionMap[EGameState::GAME_OVER] = [this]() { ProcessGameOverStateTick(); };
 
 	_isInitialized = true;
 }
@@ -67,36 +65,9 @@ void GameController::ProcessReadyStateTick()
 
 void GameController::ProcessPlayStateTick()
 {
-	if (_context->IsGameOver())
+	if (_context->IsGameOver() || _inputMgr->GetKeyPress(EKey::ESCAPE) == EPress::PRESSED)
 	{
-		_app->SetGameState(EGameState::GAME_OVER);
+		_app->SetGameState(EGameState::READY);
 		return;
-	}
-
-	if (_inputMgr->GetKeyPress(EKey::ESCAPE) == EPress::PRESSED)
-	{
-		_app->SetGameState(EGameState::PAUSE);
-	}
-}
-
-void GameController::ProcessPauseStateTick()
-{
-	if (_inputMgr->GetKeyPress(EKey::ESCAPE) == EPress::PRESSED)
-	{
-		_app->SetGameState(EGameState::PLAY, false);
-	}
-}
-
-void GameController::ProcessGameOverStateTick()
-{
-	if (_inputMgr->GetKeyPress(EKey::SPACE) == EPress::PRESSED)
-	{
-		_app->SetGameState(EGameState::PLAY);
-		return;
-	}
-
-	if (_inputMgr->GetKeyPress(EKey::ESCAPE) == EPress::PRESSED)
-	{
-		_app->SetDoneLoop(true);
 	}
 }
