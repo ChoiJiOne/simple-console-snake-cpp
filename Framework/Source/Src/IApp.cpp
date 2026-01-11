@@ -1,5 +1,5 @@
 #include "IApp.h"
-#include "GameAssert.h"
+#include "GenericAssert.h"
 
 IApp* IApp::_app = nullptr;
 
@@ -30,12 +30,10 @@ void IApp::Startup()
 
 	_consoleMgr = ConsoleManager::GetPtr();
 	_inputMgr = InputManager::GetPtr();
-	_renderMgr = RenderManager::GetPtr();
 	_actorMgr = ActorManager::GetPtr();
 
 	_consoleMgr->Startup();
 	_inputMgr->Startup();
-	_renderMgr->Startup();
 	_actorMgr->Startup();
 
 	// NOTE: 하위 클래스에서 _isInitialized 값을 true로 설정.
@@ -67,12 +65,6 @@ void IApp::Shutdown()
 	{
 		_actorMgr->Shutdown();
 		_actorMgr = nullptr;
-	}
-
-	if (_renderMgr != nullptr)
-	{
-		_renderMgr->Shutdown();
-		_renderMgr = nullptr;
 	}
 
 	if (_inputMgr != nullptr)

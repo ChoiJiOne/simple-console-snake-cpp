@@ -1,6 +1,8 @@
 #include "ConsoleManager.h"
-#include "GameAssert.h"
+#include "GenericAssert.h"
+#include "StringUtils.h"
 #include "InputManager.h"
+
 #include "Snake.h"
 
 Snake::Snake(GameContext* context, int32_t defaultBodyCount, EMoveDirection defaultMoveDirection)
@@ -9,11 +11,11 @@ Snake::Snake(GameContext* context, int32_t defaultBodyCount, EMoveDirection defa
 	, _prevMoveDirection(defaultMoveDirection)
 	, _currMoveDirection(defaultMoveDirection)
 {
-	GAME_CHECK(context != nullptr);
+	CHECK(context != nullptr);
 	_context = context;
 
 	_inputMgr = InputManager::GetPtr();
-	GAME_CHECK(_inputMgr != nullptr);
+	CHECK(_inputMgr != nullptr);
 		
 	_keyDirectionMap =
 	{

@@ -1,10 +1,10 @@
 #include "ContextView.h"
-#include "GameAssert.h"
+#include "GenericAssert.h"
 #include "ConsoleManager.h"
 
 ContextView::ContextView(GameContext* context)
 {
-	GAME_CHECK(context != nullptr);
+	CHECK(context != nullptr);
 	_consoleMgr = ConsoleManager::GetPtr();
 	_context = context;
 	_tileCharMap =

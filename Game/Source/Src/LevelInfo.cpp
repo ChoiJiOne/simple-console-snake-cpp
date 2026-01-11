@@ -1,17 +1,18 @@
-#include "GameAssert.h"
+#include "GenericAssert.h"
 #include "MathUtils.h"
+
 #include "LevelInfo.h"
 
 LevelInfo::LevelInfo(int32_t level, int32_t minScore, int32_t maxScore, float intervalTime)
 {
-	GAME_CHECK(level >= 1);
+	CHECK(level >= 1);
 	_level = level;
 
-	GAME_CHECK(minScore != maxScore);
+	CHECK(minScore != maxScore);
 	_minScore = MathUtils::Min(minScore, maxScore);
 	_maxScore = MathUtils::Max(minScore, maxScore);
 
-	GAME_CHECK(intervalTime > 0.0f);
+	CHECK(intervalTime > 0.0f);
 	_intervalTime = intervalTime;
 }
 

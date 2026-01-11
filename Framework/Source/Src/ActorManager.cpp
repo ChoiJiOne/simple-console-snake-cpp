@@ -1,5 +1,5 @@
 #include "ActorManager.h"
-#include "GameAssert.h"
+#include "GenericAssert.h"
 
 void ActorManager::Startup()
 {

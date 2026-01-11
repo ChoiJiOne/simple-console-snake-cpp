@@ -1,11 +1,11 @@
 #include "ConsoleManager.h"
-#include "GameAssert.h"
+#include "GenericAssert.h"
 #include "FoodView.h"
 #include "StringUtils.h"
 
 FoodView::FoodView(GameContext* context)
 {
-	GAME_CHECK(context != nullptr);
+	CHECK(context != nullptr);
 	_context = context;
 	_consoleMgr = ConsoleManager::GetPtr();
 

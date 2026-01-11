@@ -1,4 +1,4 @@
-#include "GameAssert.h"
+#include "GenericAssert.h"
 #include "InputManager.h"
 
 #include "GameApp.h"
@@ -7,10 +7,10 @@
 
 GameController::GameController(GameApp* app, GameContext* context)
 {
-	GAME_CHECK(app != nullptr);
+	CHECK(app != nullptr);
 	_app = app;
 
-	GAME_CHECK(context != nullptr);
+	CHECK(context != nullptr);
 	_context = context;
 
 	_inputMgr = InputManager::GetPtr();

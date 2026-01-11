@@ -1,7 +1,8 @@
 #include "ConsoleManager.h"
-#include "GameAssert.h"
-#include "ReadyView.h"
+#include "GenericAssert.h"
 #include "StringUtils.h"
+
+#include "ReadyView.h"
 
 ReadyView::ReadyView()
 {

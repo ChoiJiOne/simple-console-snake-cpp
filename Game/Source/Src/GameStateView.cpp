@@ -1,11 +1,12 @@
 #include "ConsoleManager.h"
-#include "GameAssert.h"
+#include "GenericAssert.h"
+
 #include "GameStateView.h"
 #include "StringUtils.h"
 
 GameStateView::GameStateView(GameApp* app)
 {
-	GAME_CHECK(app != nullptr);
+	CHECK(app != nullptr);
 	_app = app;
 	_consoleMgr = ConsoleManager::GetPtr();
 
@@ -46,7 +47,7 @@ void GameStateView::Render()
 	}
 
 	auto it = _stateTextMap.find(_state);
-	GAME_CHECK(it != _stateTextMap.end());
+	CHECK(it != _stateTextMap.end());
 
 	_consoleMgr->ClearRegion(_stateTextViewPositon.x, _stateTextViewPositon.y, _stateTextRegionWidth, _stateTextRegionHeight); // TODO: 이거 없으면 텍스트 곂쳐보이는 이슈 있는데, 더 좋은 방법 있으면 수정 필요.
 	_consoleMgr->Print(_stateTextViewPositon.x, _stateTextViewPositon.y, StringUtils::PrintF("STATE: %s", it->second.c_str()));

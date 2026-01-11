@@ -1,5 +1,5 @@
-#include "GameAssert.h"
 #include "GameTimer.h"
+#include "WindowsAssert.h"
 
 GameTimer::GameTimer()
 	: _secondsPerCount(0.0)
@@ -11,7 +11,7 @@ GameTimer::GameTimer()
 	, _bIsStopped(false)
 {
 	int64_t countsPerSec = 0LL;
-	GAME_CHECK(QueryPerformanceFrequency(reinterpret_cast<LARGE_INTEGER*>(&countsPerSec)));
+	WINDOWS_CHECK(QueryPerformanceFrequency(reinterpret_cast<LARGE_INTEGER*>(&countsPerSec)));
 	_secondsPerCount = 1.0 / static_cast<double>(countsPerSec);
 }
 
@@ -53,7 +53,7 @@ float GameTimer::GetDeltaSeconds() const
 void GameTimer::Reset()
 {
 	int64_t currTime = 0LL;
-	GAME_CHECK(QueryPerformanceCounter(reinterpret_cast<LARGE_INTEGER*>(&currTime)));
+	WINDOWS_CHECK(QueryPerformanceCounter(reinterpret_cast<LARGE_INTEGER*>(&currTime)));
 
 	_baseTime = currTime;
 	_prevTime = currTime;
@@ -69,7 +69,7 @@ void GameTimer::Start()
 	}
 
 	int64_t startTime = 0LL;
-	GAME_CHECK(QueryPerformanceCounter(reinterpret_cast<LARGE_INTEGER*>(&startTime)));
+	WINDOWS_CHECK(QueryPerformanceCounter(reinterpret_cast<LARGE_INTEGER*>(&startTime)));
 
 	_pausedTime += (startTime - _stopTime);
 
@@ -86,7 +86,7 @@ void GameTimer::Stop()
 	}
 
 	int64_t currTime = 0LL;
-	GAME_CHECK(QueryPerformanceCounter(reinterpret_cast<LARGE_INTEGER*>(&currTime)));
+	WINDOWS_CHECK(QueryPerformanceCounter(reinterpret_cast<LARGE_INTEGER*>(&currTime)));
 
 	_stopTime = currTime;
 	_bIsStopped = true;
@@ -101,7 +101,7 @@ void GameTimer::Tick()
 	}
 
 	int64_t currTime = 0LL;
-	GAME_CHECK(QueryPerformanceCounter(reinterpret_cast<LARGE_INTEGER*>(&currTime)));
+	WINDOWS_CHECK(QueryPerformanceCounter(reinterpret_cast<LARGE_INTEGER*>(&currTime)));
 	_currTime = currTime;
 
 	_deltaTime = (_currTime - _prevTime) * _secondsPerCount;

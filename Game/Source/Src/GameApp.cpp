@@ -1,5 +1,5 @@
 #include "GameApp.h"
-#include "GameAssert.h"
+#include "GenericAssert.h"
 
 #include "ContextView.h"
 #include "FoodView.h"

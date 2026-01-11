@@ -1,11 +1,12 @@
 #include "ConsoleManager.h"
-#include "GameAssert.h"
+#include "GenericAssert.h"
+
 #include "GameOverView.h"
 #include "StringUtils.h"
 
 GameOverView::GameOverView(GameContext* context)
 {
-	GAME_CHECK(context != nullptr);
+	CHECK(context != nullptr);
 	_context = context;
 	_consoleMgr = ConsoleManager::GetPtr();
 

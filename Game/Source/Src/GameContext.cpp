@@ -1,5 +1,6 @@
 #include "ConsoleManager.h"
-#include "GameAssert.h"
+#include "GenericAssert.h"
+
 #include "GameContext.h"
 #include "MathUtils.h"
 
@@ -47,7 +48,7 @@ void GameContext::Reset()
 
 void GameContext::SetTile(int32_t x, int32_t y, const ETile& tile, bool bForceSet)
 {
-	GAME_CHECK(IsValidTile(x, y));
+	CHECK(IsValidTile(x, y));
 
 	int32_t offset = y * _colSize + x;
 	if (!bForceSet && _tiles[offset] == tile)
@@ -66,7 +67,7 @@ void GameContext::SetTile(const Position& position, const ETile& tile)
 
 const ETile& GameContext::GetTile(int32_t x, int32_t y) const
 {
-	GAME_CHECK(IsValidTile(x, y));
+	CHECK(IsValidTile(x, y));
 
 	int32_t offset = y * _colSize + x;
 	return _tiles[offset];
