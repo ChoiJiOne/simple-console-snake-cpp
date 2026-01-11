@@ -59,13 +59,11 @@ void GameApp::Startup()
 		foodView,
 		contextView,
 	};
-
 	std::vector<IActor*> playStateRenderActors =
 	{
 		contextView,
 		snake,
 		foodView,
-		gameController,
 	};
 	SetGameStateActors(EGameState::PLAY, playStateUpdateActors, playStateRenderActors,
 		[this, snake]()
