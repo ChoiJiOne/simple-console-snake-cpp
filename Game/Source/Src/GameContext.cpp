@@ -10,19 +10,6 @@ GameContext::GameContext()
 	_minPosition = { 1, 1 };
 	_maxPosition = { _colSize - 2, _rowSize - 2 };
 
-	// TODO: 나중에 혹은 다른 프로젝트할 때는 읽기 전용 파일 읽어서 처리하기.
-	_levelInfos = 
-	{
-		LevelInfo(/*LEVEL*/ 1, /*MIN*/  1, /*MAX*/  5, /*INTERVAL*/ 0.5f),
-		LevelInfo(/*LEVEL*/ 2, /*MIN*/  5, /*MAX*/ 10, /*INTERVAL*/ 0.4f),
-		LevelInfo(/*LEVEL*/ 3, /*MIN*/ 10, /*MAX*/ 15, /*INTERVAL*/ 0.3f),
-		LevelInfo(/*LEVEL*/ 4, /*MIN*/ 15, /*MAX*/ 20, /*INTERVAL*/ 0.2f),
-		LevelInfo(/*LEVEL*/ 5, /*MIN*/ 20, /*MAX*/ 25, /*INTERVAL*/ 0.1f),
-	};
-
-	_minLevel = _levelInfos.front().GetLevel();
-	_maxLevel = _levelInfos.back().GetLevel();
-
 	Reset();
 }
 
@@ -43,7 +30,6 @@ void GameContext::Reset()
 
 	_isGameOver = false;
 	_spawnedFoodCount = 0;
-	_level = _minLevel;
 }
 
 void GameContext::SetTile(int32_t x, int32_t y, const ETile& tile, bool bForceSet)
@@ -251,36 +237,6 @@ EMoveResult GameContext::Move(int32_t& x, int32_t& y, const EMoveDirection& move
 EMoveResult GameContext::Move(Position& position, const EMoveDirection& moveDirection, bool bKeepSrc)
 {
 	return Move(position.x, position.y, moveDirection, bKeepSrc);
-}
-
-const LevelInfo& GameContext::GetCurrentLevelInfo()
-{
-	for (const auto& levelInfo : _levelInfos)
-	{
-		if (levelInfo.GetLevel() == _level)
-		{
-			return levelInfo;
-		}
-	}
-
-	// 만약 찾지 못했으면 가장 마지막 요소 반환.
-	return _levelInfos.back();
-}
-
-bool GameContext::TryLevelUp()
-{
-	int32_t currentScore = _spawnedFoodCount - 1;
-
-	const LevelInfo& currentLevelInfo = GetCurrentLevelInfo();
-	const EScoreState& currentScoreState = currentLevelInfo.GetScoreState(currentScore);
-
-	if (currentScoreState != EScoreState::ABOVE_MAX || _level >= _maxLevel)
-	{
-		return false;
-	}
-
-	_level++;
-	return true;
 }
 
 Position GameContext::GetRandomEmptyPosition() const

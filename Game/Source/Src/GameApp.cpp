@@ -6,7 +6,6 @@
 #include "GameController.h"
 #include "GameOverView.h"
 #include "GameStateView.h"
-#include "LevelView.h"
 #include "ReadyView.h"
 #include "Snake.h"
 
@@ -35,7 +34,6 @@ void GameApp::Startup()
 	ReadyView* readyView = _actorMgr->Create<ReadyView>();
 	Snake* snake = _actorMgr->Create<Snake>(&_context, 3, EMoveDirection::RIGHT);
 	FoodView* foodView = _actorMgr->Create<FoodView>(&_context);
-	LevelView* levelView = _actorMgr->Create<LevelView>(&_context);
 	GameController* gameController = _actorMgr->Create<GameController>(this, &_context);
 	GameOverView* gameOverView = _actorMgr->Create<GameOverView>(&_context);
 	GameStateView* gameStateView = _actorMgr->Create<GameStateView>(this);
@@ -58,7 +56,6 @@ void GameApp::Startup()
 		gameController,
 		snake,
 		foodView,
-		levelView,
 		contextView,
 		gameStateView,
 	};
@@ -68,7 +65,6 @@ void GameApp::Startup()
 		contextView,
 		snake,
 		foodView,
-		levelView,
 		gameController,
 		gameStateView,
 	};
@@ -86,7 +82,6 @@ void GameApp::Startup()
 	{
 		gameController,
 		foodView,
-		levelView,
 		contextView,
 		gameStateView,
 	};
@@ -96,7 +91,6 @@ void GameApp::Startup()
 		contextView,
 		snake,
 		foodView,
-		levelView,
 		gameController,
 		gameStateView,
 	};
@@ -106,7 +100,6 @@ void GameApp::Startup()
 	{
 		gameController,
 		foodView,
-		levelView,
 		contextView,
 		gameStateView,
 	};
@@ -116,7 +109,6 @@ void GameApp::Startup()
 		contextView,
 		snake,
 		foodView,
-		levelView,
 		gameController,
 		gameOverView,
 		gameStateView,

@@ -16,9 +16,6 @@ GameOverView::GameOverView(GameContext* context)
 	_foodText = "FOOD: %d";
 	_foodPosition = { 5, 9 };
 
-	_levelText = "LEVEL: %d";
-	_levelPosition = { 5, 10 };
-
 	_gameStartKeyText = "PRESS SPACE KEY";
 	_gameStartKeyViewPosition = { 3, 12 };
 
@@ -40,7 +37,6 @@ void GameOverView::Render()
 
 	_consoleMgr->Print(_gameOverPosition.x, _gameOverPosition.y, _gameOverText);
 	_consoleMgr->Print(_foodPosition.x, _foodPosition.y, StringUtils::PrintF(_foodText.c_str(), _context->GetSpawnedFoodCount() - 1));
-	_consoleMgr->Print(_levelPosition.x, _levelPosition.y, StringUtils::PrintF(_levelText.c_str(), _context->GetCurrentLevelInfo().GetLevel()));
 	_consoleMgr->Print(_gameStartKeyViewPosition.x, _gameStartKeyViewPosition.y, _gameStartKeyText);
 
 	_isDirty = false;

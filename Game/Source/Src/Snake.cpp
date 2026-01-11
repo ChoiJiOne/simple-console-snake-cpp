@@ -102,8 +102,7 @@ void Snake::Reset()
 		AddBody(position);
 	}
 
-	const LevelInfo& levelInfo = _context->GetCurrentLevelInfo();
-	_moveIntervalTime = levelInfo.GetIntervalTime();
+	_moveIntervalTime = _context->GetMoveSpeed();
 }
 
 void Snake::ClearBodys()
@@ -160,12 +159,6 @@ EMoveResult Snake::Move()
 		{
 			_context->SetGameOver(true); // NOTE: 먹이를 더 이상 생성할 수 없는 상황이라면 강제 GAME OVER.
 			return result;
-		}
-
-		if (_context->TryLevelUp())
-		{
-			const LevelInfo& levelInfo = _context->GetCurrentLevelInfo();
-			_moveIntervalTime = levelInfo.GetIntervalTime();
 		}
 
 		AddBody(tail);

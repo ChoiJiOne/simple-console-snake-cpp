@@ -6,7 +6,6 @@
 #include <vector>
 
 #include "GameMacro.h"
-#include "LevelInfo.h"
 
 enum class ETile
 {
@@ -85,9 +84,7 @@ public:
 	EMoveResult Move(int32_t& x, int32_t& y, const EMoveDirection& moveDirection, bool bKeepSrc = false);
 	EMoveResult Move(Position& position, const EMoveDirection& moveDirection, bool bKeepSrc = false);
 
-	const std::vector<LevelInfo>& GetLevelInfos() const { return _levelInfos; }
-	const LevelInfo& GetCurrentLevelInfo();
-	bool TryLevelUp();
+	float GetMoveSpeed() { return _moveSpeed; }
 
 private:
 	Position GetRandomEmptyPosition() const;
@@ -104,9 +101,5 @@ private:
 	Position _minPosition = { 0, 0 };
 	Position _maxPosition = { 0, 0 };
 	int32_t _spawnedFoodCount = 0;
-
-	int32_t _minLevel = 0;
-	int32_t _maxLevel = 0;
-	int32_t _level = 0;
-	std::vector<LevelInfo> _levelInfos;
+	float _moveSpeed = 0.5f;
 };

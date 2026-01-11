@@ -30,9 +30,6 @@ private:
 	std::string _foodText;
 	Position _foodPosition = { 0, 0 };
 
-	std::string _levelText;
-	Position _levelPosition = { 0, 0 };
-
 	std::string _gameStartKeyText;
 	Position _gameStartKeyViewPosition = { 0, 0 };
 };
