@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "Snake.h"
 
 Game::Game()
 	: _renderer(ConsoleManager::GetPtr(), &_ctx)
@@ -18,6 +19,14 @@ Result<void> Game::OnStartup(const AppContext& appCtx)
 
 	_ctx.Reset();
 
+	Snake* snake = appCtx.GetActorManager()->Create<Snake>(&_ctx, 3, EMoveDirection::RIGHT);
+	snake->Reset();
+
+	_actors =
+	{
+		snake,
+	};
+
 	return Result<void>::Success();
 }
 
@@ -29,6 +38,11 @@ void Game::OnTick(const AppContext& appCtx, float deltaSeconds)
 	if (inputMgr->GetKeyPress(EKey::ESCAPE) == EPress::PRESSED)
 	{
 		appCtx.RequestQuit();
+	}
+
+	for (auto& actor : _actors)
+	{
+		actor->Tick(deltaSeconds);
 	}
 
 	_renderer.Render();
