@@ -41,5 +41,5 @@ private:
 	std::deque<Position> _bodys;
 
 	float _moveElapsedTime = 0.0f;
-	float _moveIntervalTime = 0.5f;
+	float _moveIntervalTime = 0.4f;
 };
