@@ -27,6 +27,14 @@ void GameContext::Reset()
 	}
 
 	_isGameOver = false;
+
+	_isDirtyScore = true;
+	_isDirtyBestScore = true;
+
+	_currentScore = _spawnedFoodCount - 1; // NOTE: 이전 기록 있다면 사용.
+	_bestScore = MathUtils::Max(_bestScore, _currentScore);
+
+	_currentScore = 0;
 	_spawnedFoodCount = 0;
 }
 
@@ -41,7 +49,7 @@ void GameContext::SetTile(int32_t x, int32_t y, const ETile& tile, bool bForceSe
 	}
 
 	_tiles[offset] = tile;
-	_isDirty = true;
+	_isDirtyTile = true;
 }
 
 void GameContext::SetTile(const Position& position, const ETile& tile)
@@ -95,6 +103,9 @@ bool GameContext::TrySpawnFood()
 	Position foodPosition = GetRandomEmptyPosition();
 	SetTile(foodPosition, ETile::FOOD);
 	_spawnedFoodCount++;
+
+	_currentScore = _spawnedFoodCount - 1;
+	_isDirtyScore = true;
 
 	return true;
 }

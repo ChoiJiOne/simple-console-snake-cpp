@@ -1,3 +1,5 @@
+#include "StringUtils.h"
+
 #include "GameRenderer.h"
 
 GameRenderer::GameRenderer(ConsoleManager* consoleMgr, GameContext* gameCtx)
@@ -12,13 +14,24 @@ GameRenderer::GameRenderer(ConsoleManager* consoleMgr, GameContext* gameCtx)
 		{ ETile::HEAD, '@' },
 		{ ETile::FOOD, '*' },
 	};
+
+	_currentScoreViewPosition = { 22, 3 };
+	_bestScoreViewPosition = { 22, 4 };
 }
 
 GameRenderer::~GameRenderer() {}
 
 void GameRenderer::Render()
 {
-	if (!_gameCtx->IsDirty())
+	RenderTile();
+	RenderScore();
+	RenderBestScore();
+
+}
+
+void GameRenderer::RenderTile()
+{
+	if (!_gameCtx->IsDirtyTile())
 	{
 		return;
 	}
@@ -39,5 +52,29 @@ void GameRenderer::Render()
 		}
 	}
 
-	_gameCtx->SetDirty(false);
+	_gameCtx->SetDirtyTile(false);
+}
+
+void GameRenderer::RenderScore()
+{
+	if (!_gameCtx->IsDirtyScore())
+	{
+		return;
+	}
+
+	int32_t score = _gameCtx->GetCurrentScore();
+	_consoleMgr->Print(_currentScoreViewPosition.x, _currentScoreViewPosition.y, StringUtils::PrintF("FOOD: %3d", score));
+	_gameCtx->SetDirtyScore(false);
+}
+
+void GameRenderer::RenderBestScore()
+{
+	if (!_gameCtx->IsDirtyBestScore())
+	{
+		return;
+	}
+
+	int32_t bestScore = _gameCtx->GetBestScore();
+	_consoleMgr->Print(_bestScoreViewPosition.x, _bestScoreViewPosition.y, StringUtils::PrintF("BEST: %3d", bestScore));
+	_gameCtx->SetDirtyBestScore(false);
 }

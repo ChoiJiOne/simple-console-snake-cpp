@@ -26,7 +26,10 @@ public:
 
 	void SetTile(int32_t x, int32_t y, const ETile& tile, bool bForceSet = false);
 	void SetTile(const Position& position, const ETile& tile);
-	void SetDirty(bool isDirty) { _isDirty = isDirty; }
+	void SetDirtyTile(bool isDirty) { _isDirtyTile = isDirty; }
+	void SetDirtyScore(bool isDirty) { _isDirtyScore = isDirty; }
+	void SetDirtyBestScore(bool isDirty) { _isDirtyBestScore = isDirty; }
+
 	void SetGameOver(bool isGameOver) { _isGameOver = isGameOver; }
 
 	const ETile& GetTile(int32_t x, int32_t y) const;
@@ -34,8 +37,12 @@ public:
 	const int32_t& GetRowSize() const { return _rowSize; }
 	const int32_t& GetColSize() const { return _colSize; }
 	const int32_t& GetSpawnedFoodCount() const { return _spawnedFoodCount; }
+	const int32_t& GetCurrentScore() const { return _currentScore; }
+	const int32_t& GetBestScore() const { return _bestScore; }
 
-	bool IsDirty() const { return _isDirty; }
+	bool IsDirtyTile() const { return _isDirtyTile; }
+	bool IsDirtyScore() const { return _isDirtyScore; }
+	bool IsDirtyBestScore() const { return _isDirtyBestScore; }
 	bool IsGameOver() const { return _isGameOver; }
 	bool IsValidTile(int32_t x, int32_t y) const;
 	bool IsValidTile(const Position& position) const;
@@ -64,7 +71,9 @@ private:
 	Position GetRandomEmptyPosition() const;
 
 private:
-	bool _isDirty = false;
+	bool _isDirtyTile = false;
+	bool _isDirtyScore = false;
+	bool _isDirtyBestScore = false;
 	bool _isGameOver = false;
 
 	int32_t _rowSize = 20; // 세로 크기
@@ -75,6 +84,9 @@ private:
 	Position _minPosition = { 0, 0 };
 	Position _maxPosition = { 0, 0 };
 
-
 	int32_t _spawnedFoodCount = 0;
+
+	// 점수 기준: 먹은 먹이 수
+	int32_t _currentScore = 0;
+	int32_t _bestScore = 0;
 };
