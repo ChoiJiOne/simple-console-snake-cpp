@@ -1,4 +1,5 @@
 #include "GenericAssert.h"
+#include "MathUtils.h"
 
 #include "GameContext.h"
 
@@ -26,6 +27,7 @@ void GameContext::Reset()
 	}
 
 	_isGameOver = false;
+	_spawnedFoodCount = 0;
 }
 
 void GameContext::SetTile(int32_t x, int32_t y, const ETile& tile, bool bForceSet)
@@ -81,6 +83,20 @@ bool GameContext::HasEmptyTile() const
 	}
 
 	return false;
+}
+
+bool GameContext::TrySpawnFood()
+{
+	if (!HasEmptyTile())
+	{
+		return false;
+	}
+
+	Position foodPosition = GetRandomEmptyPosition();
+	SetTile(foodPosition, ETile::FOOD);
+	_spawnedFoodCount++;
+
+	return true;
 }
 
 bool GameContext::IsValidTile(int32_t x, int32_t y) const
@@ -219,4 +235,34 @@ EMoveResult GameContext::Move(int32_t& x, int32_t& y, const EMoveDirection& move
 EMoveResult GameContext::Move(Position& position, const EMoveDirection& moveDirection, bool bKeepSrc)
 {
 	return Move(position.x, position.y, moveDirection, bKeepSrc);
+}
+
+Position GameContext::GetRandomEmptyPosition() const
+{
+	Position randomPosition{ -1, -1 };
+	if (!HasEmptyTile())
+	{
+		return randomPosition;
+	}
+
+	// NOTE: 진짜 수상하게 무한루프(?) 돌아야 하는지 확인 필요 (물론 진짜 무한 루프 돌일은 거의 없을거 같지만 혹시 몰라서...)
+	bool bFoundRandomPosition = false;
+	while (!bFoundRandomPosition)
+	{
+		randomPosition.x = MathUtils::GenerateRandomInt(_minPosition.x, _maxPosition.x);
+		randomPosition.y = MathUtils::GenerateRandomInt(_minPosition.y, _maxPosition.y);
+
+		if (!IsValidTile(randomPosition))
+		{
+			continue;
+		}
+
+		const ETile& tile = GetTile(randomPosition);
+		if (tile == ETile::EMPTY)
+		{
+			bFoundRandomPosition = true;
+		}
+	}
+
+	return randomPosition;
 }

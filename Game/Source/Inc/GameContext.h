@@ -33,6 +33,7 @@ public:
 	const ETile& GetTile(const Position& position) const;
 	const int32_t& GetRowSize() const { return _rowSize; }
 	const int32_t& GetColSize() const { return _colSize; }
+	const int32_t& GetSpawnedFoodCount() const { return _spawnedFoodCount; }
 
 	bool IsDirty() const { return _isDirty; }
 	bool IsGameOver() const { return _isGameOver; }
@@ -41,6 +42,8 @@ public:
 	bool IsOutline(int32_t x, int32_t y) const;
 	bool IsOutline(const Position& position) const;
 	bool HasEmptyTile() const;
+	
+	bool TrySpawnFood();
 
 	bool CanMoveTo(int32_t srcX, int32_t srcY, int32_t dstX, int32_t dstY);
 	bool CanMoveTo(const Position& srcPosition, const Position& dstPosition);
@@ -58,6 +61,9 @@ public:
 	EMoveResult Move(Position& position, const EMoveDirection& moveDirection, bool bKeepSrc = false);
 
 private:
+	Position GetRandomEmptyPosition() const;
+
+private:
 	bool _isDirty = false;
 	bool _isGameOver = false;
 
@@ -68,4 +74,7 @@ private:
 
 	Position _minPosition = { 0, 0 };
 	Position _maxPosition = { 0, 0 };
+
+
+	int32_t _spawnedFoodCount = 0;
 };

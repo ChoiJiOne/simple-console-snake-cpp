@@ -21,6 +21,7 @@ Result<void> Game::OnStartup(const AppContext& appCtx)
 
 	Snake* snake = appCtx.GetActorManager()->Create<Snake>(&_ctx, 3, EMoveDirection::RIGHT);
 	snake->Reset();
+	_ctx.TrySpawnFood();
 
 	_actors =
 	{
