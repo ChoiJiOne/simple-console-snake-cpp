@@ -36,6 +36,13 @@ void GameContext::Reset()
 
 	_currentScore = 0;
 	_spawnedFoodCount = 0;
+
+	if (_snakeStateResetFn != nullptr)
+	{
+		_snakeStateResetFn(); // 뱀 상태 초기화
+		TrySpawnFood(); // 음식 스폰.
+	}
+
 }
 
 void GameContext::SetTile(int32_t x, int32_t y, const ETile& tile, bool bForceSet)

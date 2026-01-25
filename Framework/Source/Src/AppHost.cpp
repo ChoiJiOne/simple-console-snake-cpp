@@ -54,7 +54,9 @@ Result<void> AppHost::Run(IGame& game)
 	while (!_isQuit)
 	{
 		UpdateTick(ctx.GetInputManager());
+		game.OnPreTick(ctx, _timer.GetDeltaSeconds());
 		game.OnTick(ctx, _timer.GetDeltaSeconds());
+		game.OnPostTick(ctx, _timer.GetDeltaSeconds());
 	}
 
 	Result<void> resultShutdown = game.OnShutdown(ctx);

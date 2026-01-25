@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <functional>
 #include <vector>
 
 #include "Macro.h"
@@ -29,7 +30,7 @@ public:
 	void SetDirtyTile(bool isDirty) { _isDirtyTile = isDirty; }
 	void SetDirtyScore(bool isDirty) { _isDirtyScore = isDirty; }
 	void SetDirtyBestScore(bool isDirty) { _isDirtyBestScore = isDirty; }
-
+	void SetSnakeResetFn(const std::function<void()>& snakeStateResetFn) { _snakeStateResetFn = snakeStateResetFn; }
 	void SetGameOver(bool isGameOver) { _isGameOver = isGameOver; }
 
 	const ETile& GetTile(int32_t x, int32_t y) const;
@@ -89,4 +90,7 @@ private:
 	// 점수 기준: 먹은 먹이 수
 	int32_t _currentScore = 0;
 	int32_t _bestScore = 0;
+
+	// 뱀 상태 리셋
+	std::function<void()> _snakeStateResetFn = nullptr;
 };
